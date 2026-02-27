@@ -9,7 +9,8 @@
 
 class DynamicArray {
     int capacity;
-    int* arr;
+    int size;
+    int* array;
 
 void push_back(int element);
     void pop(int element);
@@ -24,12 +25,13 @@ void push_back(int element);
     int find(int value);
     int print();
 
-    DynamicArray();
+    explicit DynamicArray(int size);
     DynamicArray(const DynamicArray& arr);
     DynamicArray(DynamicArray&& arr);
     ~DynamicArray();
 
     DynamicArray operator=(DynamicArray& arr);
+    DynamicArray operator=(DynamicArray&& arr);
 
 
 };
