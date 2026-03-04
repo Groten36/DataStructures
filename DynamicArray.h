@@ -8,12 +8,12 @@
 
 
 class DynamicArray {
-    int capacity;
-    int size;
+    unsigned int capacity;
+    unsigned int size;
     int* array;
-
+public:
 void push_back(int element);
-    void pop(int element);
+    void pop();
     void resizeArray(int newSize);
     int getSize();
     int getCapacity();
@@ -23,15 +23,16 @@ void push_back(int element);
     void removeByValueFirst(int value);
     void removeByValueAll(int value);
     int find(int value);
-    int print();
+    void print();
 
-    explicit DynamicArray(int size);
+    DynamicArray();
+    DynamicArray(int size);
     DynamicArray(const DynamicArray& arr);
-    DynamicArray(DynamicArray&& arr);
+    DynamicArray(DynamicArray&& arr) noexcept;
     ~DynamicArray();
 
-    DynamicArray operator=(DynamicArray& arr);
-    DynamicArray& operator=(DynamicArray&& arr);
+    DynamicArray& operator=(DynamicArray& arr);
+    DynamicArray& operator=(DynamicArray&& arr) noexcept ;
 
 
 };
