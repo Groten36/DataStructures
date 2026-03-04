@@ -31,7 +31,7 @@ void push_back(int element);
     ~DynamicArray();
 
     DynamicArray operator=(DynamicArray& arr);
-    DynamicArray operator=(DynamicArray&& arr);
+    DynamicArray& operator=(DynamicArray&& arr);
 
 
 };

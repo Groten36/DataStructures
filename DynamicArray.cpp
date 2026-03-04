@@ -42,3 +42,15 @@ DynamicArray DynamicArray::operator=(DynamicArray& arr) {
     }
     return *this;
 }
+
+DynamicArray& DynamicArray::operator=(DynamicArray&& arr) {
+    if (this==&arr) return *this;
+    delete[] array;
+    capacity=arr.capacity;
+    size=arr.size;
+    array=arr.array;
+    arr.array=nullptr;
+    arr.capacity=0;
+    arr.size=0;
+    return *this;
+}
