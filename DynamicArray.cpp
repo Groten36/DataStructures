@@ -2,15 +2,13 @@
 // Created by vader on 27/02/2026.
 //
 #include<iostream>
+#include <stdexcept>
 
 #include "DynamicArray.h"
 DynamicArray::DynamicArray() :capacity(0),size(0),array(nullptr){};
 
-DynamicArray::DynamicArray(int capacity) {
-    this->capacity=capacity;
-    this->size=0;
-    this->array= capacity>0 ? new int[capacity]:nullptr;
-}
+DynamicArray::DynamicArray(int capacity):capacity(capacity),size(0),array(capacity>0?new int[capacity]:nullptr){};
+
 
 DynamicArray::DynamicArray(const DynamicArray& arr) {
     this->capacity=arr.capacity;
@@ -57,52 +55,53 @@ DynamicArray& DynamicArray::operator=(DynamicArray&& arr) noexcept {
     arr.size=0;
     return *this;
 }
-
-DynamicArray DynamicArray::operator[](int index) {
-    if (index<0 || index>=size) throw std::out_of_range("Index out of range");
+int& DynamicArray::operator[](size_t index) {
+    if (index>=size) throw std::out_of_range("Index out of range");
     return array[index];
 }
 
-void DynamicArray::print() {
-    if (array!=nullptr) {
-        for (int i=0;i<size;i++) {
-            std::cout<<array[i];
+const int& DynamicArray::operator[](size_t index) const{
+    if (index>=size) throw std::out_of_range("Index out of range");
+    return array[index];
+}
+
+void DynamicArray::print() const{
+    for (int i=0;i<size;i++) {
+        std::cout<<array[i]<<" ";
         }
-    }
+
 }
 
 void DynamicArray::push_back(int element) {
     if (size>=capacity) resizeArray(capacity==0 ? 1 : capacity*2);
-    array[size]=element;
-    size++;
+    array[size++]=element;
 }
 
-void DynamicArray::resizeArray(int newSize) {
-    if (newSize<=size) return; //temporary check; shrinking array will be implement later;
-    int* resizedArray=new int[newSize];
+void DynamicArray::resizeArray(int newCapacity) {
+    if (newCapacity<size) throw std::out_of_range("New capacity smaller than size");
+    int* resizedArray=new int[newCapacity];
     for (int i=0;i<size;i++) {
         resizedArray[i]=array[i];
     }
     delete[] array;
     array=resizedArray;
-    capacity=newSize;
+    capacity=newCapacity;
 
-    //for later add handling situation when new capacity is smaller than current size
 }
 
-int DynamicArray::getCapacity() {
+int DynamicArray::getCapacity() const {
     return capacity;
 }
 
-int DynamicArray::getSize() {
+int DynamicArray::getSize() const{
     return size;
 }
 
-bool DynamicArray::isEmpty() {
+bool DynamicArray::isEmpty() const{
     return size==0;
 }
 
-int DynamicArray::find(int value) {
+int DynamicArray::find(int value) const{
     for (int i=0;i<size;i++) {
         if (array[i]==value) return i;
     }
@@ -110,8 +109,8 @@ int DynamicArray::find(int value) {
 }
 
 void DynamicArray::pushAtPosition(int element, int position) {
+    if (position> size || position<0) throw std::out_of_range("Index out of range");
     if (size>=capacity) resizeArray(capacity==0 ? 1:capacity*2);
-    if (position>= size || position<0) throw std::out_of_range("Index out of range");
 
     for (int i=size;i>position;i--) {
         array[i]=array[i-1];
@@ -126,7 +125,7 @@ void DynamicArray::pop() {
         throw std::underflow_error("Empty array");
     }
     size--;
-    //TBA: capacity shrinking
+    if (size<capacity/4) resizeArray(capacity/2);
 }
 
 void DynamicArray::removeAtPosition(int position) {
@@ -134,7 +133,7 @@ void DynamicArray::removeAtPosition(int position) {
 
         throw std::underflow_error("Empty array");
     }
-    if (position<0 || position>size-1) return;
+    if (position<0 || position>=size) return;
     for (int i=position;i<size-1;i++) {
         array[i]=array[i+1];
     }
