@@ -19,7 +19,7 @@ void push_back(int element);
     int getCapacity();
     bool isEmpty();
     void pushAtPosition(int element,int position);
-    void removeAtPosition(int element,int position);
+    void removeAtPosition(int position);
     void removeByValueFirst(int value);
     void removeByValueAll(int value);
     int find(int value);
@@ -31,8 +31,9 @@ void push_back(int element);
     DynamicArray(DynamicArray&& arr) noexcept;
     ~DynamicArray();
 
-    DynamicArray& operator=(DynamicArray& arr);
-    DynamicArray& operator=(DynamicArray&& arr) noexcept ;
+    DynamicArray& operator=(const DynamicArray& arr);
+    DynamicArray& operator=(DynamicArray&& arr) noexcept;
+    DynamicArray operator[](int index);
 
 
 };

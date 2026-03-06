@@ -4,21 +4,19 @@
 #include<iostream>
 
 #include "DynamicArray.h"
-DynamicArray::DynamicArray() {
-    capacity=0;
-    size=0;
-}
+DynamicArray::DynamicArray() :capacity(0),size(0),array(nullptr){};
+
 DynamicArray::DynamicArray(int capacity) {
     this->capacity=capacity;
     this->size=0;
-    this->array=new int[size];
+    this->array= capacity>0 ? new int[capacity]:nullptr;
 }
 
 DynamicArray::DynamicArray(const DynamicArray& arr) {
     this->capacity=arr.capacity;
     this->size=arr.size;
     this->array=new int[arr.capacity];
-    for (int i=0;i<capacity;i++) {
+    for (int i=0;i<size;i++) {
         this->array[i]=arr.array[i];
     }
 
@@ -36,13 +34,13 @@ DynamicArray::~DynamicArray() {
     delete[] array;
 }
 
-DynamicArray& DynamicArray::operator=(DynamicArray& arr) {
+DynamicArray& DynamicArray::operator=(const DynamicArray& arr) {
     if (this==&arr) return *this;
     delete[] array;
     capacity=arr.capacity;
     size=arr.size;
     array=new int[capacity];
-    for (int i=0;i<capacity;i++) {
+    for (int i=0;i<size;i++) {
         array[i]=arr.array[i];
     }
     return *this;
@@ -58,6 +56,11 @@ DynamicArray& DynamicArray::operator=(DynamicArray&& arr) noexcept {
     arr.capacity=0;
     arr.size=0;
     return *this;
+}
+
+DynamicArray DynamicArray::operator[](int index) {
+    if (index<0 || index>=size) throw std::out_of_range("Index out of range");
+    return array[index];
 }
 
 void DynamicArray::print() {
@@ -108,7 +111,7 @@ int DynamicArray::find(int value) {
 
 void DynamicArray::pushAtPosition(int element, int position) {
     if (size>=capacity) resizeArray(capacity==0 ? 1:capacity*2);
-    if (position>= size) return;
+    if (position>= size || position<0) throw std::out_of_range("Index out of range");
 
     for (int i=size;i>position;i--) {
         array[i]=array[i-1];
@@ -126,12 +129,12 @@ void DynamicArray::pop() {
     //TBA: capacity shrinking
 }
 
-void DynamicArray::removeAtPosition(int element, int position) {
+void DynamicArray::removeAtPosition(int position) {
     if (this->isEmpty()) {
 
         throw std::underflow_error("Empty array");
     }
-    if (position<0&&position>size-1) return;
+    if (position<0 || position>size-1) return;
     for (int i=position;i<size-1;i++) {
         array[i]=array[i+1];
     }
