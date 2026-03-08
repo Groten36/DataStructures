@@ -141,7 +141,7 @@ void DynamicArray::erase(size_t position) {
     size_--;
 }
 
-void DynamicArray::clear() {
+void DynamicArray::clear() noexcept{
     size_=0;
 }
 
