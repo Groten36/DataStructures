@@ -3,143 +3,186 @@
 //
 #include<iostream>
 #include <stdexcept>
+#include <algorithm>
+
 
 #include "DynamicArray.h"
-DynamicArray::DynamicArray() :capacity(0),size(0),array(nullptr){};
+DynamicArray::DynamicArray() :capacity_(0),size_(0),array_(nullptr){};
 
-DynamicArray::DynamicArray(int capacity):capacity(capacity),size(0),array(capacity>0?new int[capacity]:nullptr){};
+DynamicArray::DynamicArray(size_t capacity):capacity_(capacity),size_(0),array_(capacity>0?new int[capacity]:nullptr){};
 
 
 DynamicArray::DynamicArray(const DynamicArray& arr) {
-    this->capacity=arr.capacity;
-    this->size=arr.size;
-    this->array=new int[arr.capacity];
-    for (int i=0;i<size;i++) {
-        this->array[i]=arr.array[i];
+    capacity_=arr.capacity_;
+    size_=arr.size_;
+    if (capacity_>0) {
+        this->array_=new int[arr.capacity_];
+        std::copy(arr.array_,arr.array_+size_,array_);
     }
+    else{array_=nullptr;}
 
 }
 
 DynamicArray::DynamicArray(DynamicArray&& arr) noexcept{
-    capacity=arr.capacity;
-    size=arr.size;
-    array=arr.array;
-    arr.array=nullptr;
-    arr.capacity=0;
-    arr.size=0;
+    capacity_=arr.capacity_;
+    size_=arr.size_;
+    array_=arr.array_;
+    arr.array_=nullptr;
+    arr.capacity_=0;
+    arr.size_=0;
 }
 DynamicArray::~DynamicArray() {
-    delete[] array;
+    delete[] array_;
 }
 
 DynamicArray& DynamicArray::operator=(const DynamicArray& arr) {
     if (this==&arr) return *this;
-    delete[] array;
-    capacity=arr.capacity;
-    size=arr.size;
-    array=new int[capacity];
-    for (int i=0;i<size;i++) {
-        array[i]=arr.array[i];
-    }
+    delete[] array_;
+    capacity_=arr.capacity_;
+    size_=arr.size_;
+    if (capacity_>0) {
+        array_=new int[capacity_];
+        std::copy(arr.array_,arr.array_+size_,array_);
+    }else{array_=nullptr;}
     return *this;
 }
 
 DynamicArray& DynamicArray::operator=(DynamicArray&& arr) noexcept {
     if (this==&arr) return *this;
-    delete[] array;
-    capacity=arr.capacity;
-    size=arr.size;
-    array=arr.array;
-    arr.array=nullptr;
-    arr.capacity=0;
-    arr.size=0;
+    delete[] array_;
+    capacity_=arr.capacity_;
+    size_=arr.size_;
+    array_=arr.array_;
+    arr.array_=nullptr;
+    arr.capacity_=0;
+    arr.size_=0;
     return *this;
 }
 int& DynamicArray::operator[](size_t index) {
-    if (index>=size) throw std::out_of_range("Index out of range");
-    return array[index];
+    if (index>=size_) throw std::out_of_range("Index out of range");
+    return array_[index];
 }
 
 const int& DynamicArray::operator[](size_t index) const{
-    if (index>=size) throw std::out_of_range("Index out of range");
-    return array[index];
+    if (index>=size_) throw std::out_of_range("Index out of range");
+    return array_[index];
 }
 
 void DynamicArray::print() const{
-    for (int i=0;i<size;i++) {
-        std::cout<<array[i]<<" ";
+    for (size_t i=0;i<size_;i++) {
+        std::cout<<array_[i]<<" ";
         }
 
 }
 
 void DynamicArray::push_back(int element) {
-    if (size>=capacity) resizeArray(capacity==0 ? 1 : capacity*2);
-    array[size++]=element;
+    if (size_>=capacity_) resizeArray(capacity_==0 ? 1 : capacity_*2);
+    array_[size_++]=element;
 }
 
-void DynamicArray::resizeArray(int newCapacity) {
-    if (newCapacity<size) throw std::out_of_range("New capacity smaller than size");
+void DynamicArray::resizeArray(size_t newCapacity) {
+    if (newCapacity<size_) throw std::out_of_range("New capacity smaller than size");
     int* resizedArray=new int[newCapacity];
-    for (int i=0;i<size;i++) {
-        resizedArray[i]=array[i];
-    }
-    delete[] array;
-    array=resizedArray;
-    capacity=newCapacity;
+    std::copy(array_,array_+size_,resizedArray);
+    delete[] array_;
+    array_=resizedArray;
+    capacity_=newCapacity;
 
 }
 
-int DynamicArray::getCapacity() const {
-    return capacity;
+size_t DynamicArray::capacity() const noexcept{
+    return capacity_;
 }
 
-int DynamicArray::getSize() const{
-    return size;
+size_t DynamicArray::size() const noexcept{
+    return size_;
 }
 
-bool DynamicArray::isEmpty() const{
-    return size==0;
+bool DynamicArray::empty() const noexcept{
+    return size_==0;
 }
 
-int DynamicArray::find(int value) const{
-    for (int i=0;i<size;i++) {
-        if (array[i]==value) return i;
+size_t DynamicArray::find(int value) const{
+    for (size_t i=0;i<size_;i++) {
+        if (array_[i]==value) return i;
     }
     return -1;
 }
 
-void DynamicArray::pushAtPosition(int element, int position) {
-    if (position> size || position<0) throw std::out_of_range("Index out of range");
-    if (size>=capacity) resizeArray(capacity==0 ? 1:capacity*2);
+void DynamicArray::insert(int element, size_t position) {
+    if (position> size_ ) throw std::out_of_range("Index out of range");
+    if (size_>=capacity_) resizeArray(capacity_==0 ? 1:capacity_*2);
 
-    for (int i=size;i>position;i--) {
-        array[i]=array[i-1];
+    for (size_t i=size_;i>position;--i) {
+        array_[i]=array_[i-1];
     }
-    array[position]=element;
-    size++;
+    array_[position]=element;
+    size_++;
 }
 
 void DynamicArray::pop() {
-    if (this->isEmpty()) {
+    if (this->empty()) {
 
         throw std::underflow_error("Empty array");
     }
-    size--;
-    if (size<capacity/4) resizeArray(capacity/2);
+    size_--;
+    if (capacity_>1&&size_<capacity_/4) resizeArray(capacity_/2);
 }
 
-void DynamicArray::removeAtPosition(int position) {
-    if (this->isEmpty()) {
+void DynamicArray::erase(size_t position) {
+    if (this->empty()) {
 
         throw std::underflow_error("Empty array");
     }
-    if (position<0 || position>=size) return;
-    for (int i=position;i<size-1;i++) {
-        array[i]=array[i+1];
+    if (position>=size_) throw std::out_of_range("Index out of range");
+    for (size_t i=position;i<size_-1;i++) {
+        array_[i]=array_[i+1];
     }
-    size--;
+    size_--;
 }
 
+void DynamicArray::clear() {
+    size_=0;
+}
+
+int* DynamicArray::begin() noexcept {
+    return array_;
+}
+
+int* DynamicArray::end() noexcept {
+    return array_+size_;
+}
+
+const int* DynamicArray::begin() const noexcept{
+    return array_;
+}
+const int* DynamicArray::end() const noexcept{
+    return array_+size_;
+}
+
+int& DynamicArray::front() {
+    if (empty())
+        throw std::out_of_range("Empty array");
+    return *array_;
+}
+
+int& DynamicArray::back() {
+    if (empty())
+        throw std::out_of_range("Empty array");
+    return *(array_+size_-1);
+}
+
+const int& DynamicArray::front() const {
+    if (empty())
+        throw std::out_of_range("Empty array");
+    return *array_;
+}
+
+const int& DynamicArray::back() const {
+    if (empty())
+        throw std::out_of_range("Empty array");
+    return *(array_+size_-1);
+}
 
 
 

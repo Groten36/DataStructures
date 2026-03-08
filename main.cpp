@@ -25,13 +25,13 @@ int main() {
                 std::cin>>value;
                 std::cout<<"Position: ";
                 std::cin>>pos;
-                arr.pushAtPosition(value,pos);
+                arr.insert(value,pos);
                 break;
 
             case 3:
                 std::cout<<"Position: ";
                 std::cin>>pos;
-                arr.removeAtPosition(pos);
+                arr.erase(pos);
                 break;
 
             case 4:
