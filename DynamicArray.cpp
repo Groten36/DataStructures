@@ -6,11 +6,11 @@
 #include <stdexcept>
 
 #include "DynamicArray.h"
-DynamicArray::DynamicArray() : capacity_(0), size_(0), array_(nullptr){};
+DynamicArray::DynamicArray() : capacity_(0), size_(0), array_(nullptr) {};
 
 DynamicArray::DynamicArray(size_t capacity)
     : capacity_(capacity), size_(0),
-      array_(capacity > 0 ? new int[capacity] : nullptr){};
+      array_(capacity > 0 ? new int[capacity] : nullptr) {};
 
 DynamicArray::DynamicArray(const DynamicArray &arr) {
   capacity_ = arr.capacity_;
