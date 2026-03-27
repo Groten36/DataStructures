@@ -1,1 +1,1 @@
-/usr/bin/c++ CMakeFiles/DataStructures.dir/main.cpp.o CMakeFiles/DataStructures.dir/DynamicArray.cpp.o -o DataStructures 
+/usr/sbin/c++ -Wl,--dependency-file=CMakeFiles/DataStructures.dir/link.d CMakeFiles/DataStructures.dir/main.cpp.o CMakeFiles/DataStructures.dir/DynamicArray.cpp.o CMakeFiles/DataStructures.dir/Stack.cpp.o -o DataStructures

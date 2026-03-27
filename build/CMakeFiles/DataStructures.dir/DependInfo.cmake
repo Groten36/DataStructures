@@ -8,8 +8,10 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/vader/DataStructures/DataStructures/DynamicArray.cpp" "CMakeFiles/DataStructures.dir/DynamicArray.cpp.o" "gcc" "CMakeFiles/DataStructures.dir/DynamicArray.cpp.o.d"
-  "/home/vader/DataStructures/DataStructures/main.cpp" "CMakeFiles/DataStructures.dir/main.cpp.o" "gcc" "CMakeFiles/DataStructures.dir/main.cpp.o.d"
+  "/home/vader/DataStructures/DynamicArray.cpp" "CMakeFiles/DataStructures.dir/DynamicArray.cpp.o" "gcc" "CMakeFiles/DataStructures.dir/DynamicArray.cpp.o.d"
+  "/home/vader/DataStructures/Stack.cpp" "CMakeFiles/DataStructures.dir/Stack.cpp.o" "gcc" "CMakeFiles/DataStructures.dir/Stack.cpp.o.d"
+  "/home/vader/DataStructures/main.cpp" "CMakeFiles/DataStructures.dir/main.cpp.o" "gcc" "CMakeFiles/DataStructures.dir/main.cpp.o.d"
+  "" "DataStructures" "gcc" "CMakeFiles/DataStructures.dir/link.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

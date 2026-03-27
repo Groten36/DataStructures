@@ -1,50 +1,27 @@
 #include <iostream>
 
 #include "DynamicArray.h"
+#include "Stack.h"
 
 int main() {
 
-  DynamicArray arr;
-  int choice, value, pos;
+    Stack s(5);
 
-  do {
-    std::cout << "\n1 Push Back\n2 Insert at position\n3 Remove\n4 Find\n5 "
-                 "Print\n6 Exit\n";
-    std::cin >> choice;
+    // Push elements
+    s.push(10);
+    s.push(20);
+    s.push(30);
 
-    switch (choice) {
+    std::cout << "Size: " << s.capacity() << "\n";       // 3
+    std::cout << "Top:  " << s.peek()  << "\n";       // 30
 
-    case 1:
-      std::cout << "Value: ";
-      std::cin >> value;
-      arr.push_back(value);
-      break;
-
-    case 2:
-      std::cout << "Value: ";
-      std::cin >> value;
-      std::cout << "Position: ";
-      std::cin >> pos;
-      arr.insert(value, pos);
-      break;
-
-    case 3:
-      std::cout << "Position: ";
-      std::cin >> pos;
-      arr.erase(pos);
-      break;
-
-    case 4:
-      std::cout << "Value: ";
-      std::cin >> value;
-      std::cout << "Index: " << arr.find(value) << std::endl;
-      break;
-
-    case 5:
-      arr.print();
-      break;
+    // Pop and print all
+    while (!s.empty()) {
+        std::cout << s.peek() << " ";
+        s.pop();
     }
+    std::cout << "\n";   // 30 20 10
 
-  } while (choice != 6);
-  return 0;
+    return 0;
+
 }

@@ -1,6 +1,9 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/DataStructures.dir/link.d"
   "CMakeFiles/DataStructures.dir/DynamicArray.cpp.o"
   "CMakeFiles/DataStructures.dir/DynamicArray.cpp.o.d"
+  "CMakeFiles/DataStructures.dir/Stack.cpp.o"
+  "CMakeFiles/DataStructures.dir/Stack.cpp.o.d"
   "CMakeFiles/DataStructures.dir/main.cpp.o"
   "CMakeFiles/DataStructures.dir/main.cpp.o.d"
   "DataStructures"
