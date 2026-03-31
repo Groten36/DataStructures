@@ -1,26 +1,41 @@
 #include <iostream>
+#include <string>
 
 #include "DynamicArray.h"
 #include "Stack.h"
 
+bool isOpeningBracket(const char c){
+  return c=='('||c=='['||c=='{';
+}
+
+bool isClosingBracket(const char c){
+  return c==')'||c==']'||c=='}';
+}
+
+bool isMatching(const char o, const char c){
+  return (o=='('&&c==')')||(o=='['&&c==']')||(o=='{'&&c=='}');
+}
+
 int main() {
-
-  Stack s(5);
-
-  // Push elements
-  s.push(10);
-  s.push(20);
-  s.push(30);
-
-  std::cout << "Size: " << s.capacity() << "\n"; // 3
-  std::cout << "Top:  " << s.peek() << "\n";     // 30
-
-  // Pop and print all
-  while (!s.empty()) {
-    std::cout << s.peek() << " ";
-    s.pop();
+  bool correct=true;
+  std::string brackets="{[(]}";
+  Stack stack(brackets.length());
+  for(auto s:brackets){
+    if(isOpeningBracket(s)){
+      stack.push(s);
+    }else
+      if(isClosingBracket(s)){
+        if(!stack.empty()&&isMatching(stack.peek(),s)){
+      stack.pop();}
+      else{
+        correct=false;
+      }
+    }
   }
-  std::cout << "\n"; // 30 20 10
+   if (correct) {
+    std::cout << "Brackets correct\n";
+  } else {
+    std::cout << "Wrong brackets\n";
+  }
 
-  return 0;
 }
