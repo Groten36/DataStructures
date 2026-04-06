@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <stdexcept>
+#include <algorithm>
 
 Stack::Stack(int size) : top_(0), capacity_(size), stack_(nullptr) {
   if (size <= 0) {
@@ -11,11 +12,8 @@ Stack::Stack(int size) : top_(0), capacity_(size), stack_(nullptr) {
 }
 
 Stack::Stack(const Stack &stack)
-    : top_(stack.top_), capacity_(stack.capacity_), stack_(nullptr) {
-  stack_ = new int[capacity_];
-  for (int i = 0; i < top_; i++) {
-    stack_[i] = stack.stack_[i];
-  }
+    : top_(stack.top_), capacity_(stack.capacity_), stack_(new int[capacity_]) {
+  std::copy(stack.stack_, stack.stack_ + stack.top_, stack_);
 }
 
 Stack::Stack(Stack &&stack) noexcept
@@ -27,9 +25,20 @@ Stack::Stack(Stack &&stack) noexcept
 
 Stack::~Stack() { delete[] stack_; }
 
+void Stack::resize(int newCapacity) {
+  if (newCapacity < top_)
+    throw std::out_of_range("New capacity smaller than size");
+  int *resizedStack = new int[newCapacity];
+  std::copy(stack_, stack_ + top_, resizedStack);
+  delete[] stack_;
+  stack_ = resizedStack;
+  capacity_ = newCapacity;
+}
 void Stack::push(int value) {
   if (isFull())
-    throw std::overflow_error("Stack is full");
+    {
+      resize(capacity_*2);
+    }
   stack_[top_] = value;
   ++top_;
 }
@@ -38,6 +47,10 @@ void Stack::pop() {
   if (empty())
     throw std::underflow_error("Empty stack");
   --top_;
+
+  if(capacity_ > 4 && top_<capacity_/4){
+    resize(capacity_/2);
+  }
 }
 
 int Stack::peek() const {
@@ -57,9 +70,7 @@ Stack &Stack::operator=(const Stack &stack) {
     return *this;
 
   int *newStack = new int[stack.capacity_];
-  for (int i = 0; i < stack.top_; i++) {
-    newStack[i] = stack.stack_[i];
-  }
+  std::copy(stack.stack_, stack.stack_ + stack.top_, newStack);
 
   delete[] stack_;
 

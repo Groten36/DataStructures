@@ -17,25 +17,19 @@ bool isMatching(const char o, const char c){
 }
 
 int main() {
-  bool correct=true;
-  std::string brackets="{[(]}";
-  Stack stack(brackets.length());
-  for(auto s:brackets){
-    if(isOpeningBracket(s)){
-      stack.push(s);
-    }else
-      if(isClosingBracket(s)){
-        if(!stack.empty()&&isMatching(stack.peek(),s)){
-      stack.pop();}
-      else{
-        correct=false;
-      }
-    }
+  constexpr std::size_t kBitCapacity = 32;
+  Stack bitStack(kBitCapacity);
+  unsigned int number=11;
+  if (number == 0) {
+    std::cout << 0 << '\n';
+    return 0;
+}
+
+  while(number!=0){
+    bitStack.push(number%2);
+    number=number/2;
   }
-   if (correct) {
-    std::cout << "Brackets correct\n";
-  } else {
-    std::cout << "Wrong brackets\n";
-  }
+
+  printStack(bitStack);
 
 }

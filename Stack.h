@@ -3,6 +3,7 @@ class Stack {
   int capacity_;
   int *stack_;
 
+  void resize(int newCapacity);
 public:
   Stack() = delete;
   explicit Stack(int size);
