@@ -1,3 +1,0 @@
-/home/vader/DataStructures/build/CMakeFiles/DataStructures.dir
-/home/vader/DataStructures/build/CMakeFiles/edit_cache.dir
-/home/vader/DataStructures/build/CMakeFiles/rebuild_cache.dir
